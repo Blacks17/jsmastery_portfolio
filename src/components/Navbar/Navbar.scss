@@ -158,6 +158,9 @@
             color: var(--secondary-color);
           }
         }
+        @media screen and (max-width: 600px) {
+          margin: 0.5rem;
+        }
       }
     }
 
