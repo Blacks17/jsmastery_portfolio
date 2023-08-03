@@ -36,6 +36,17 @@ const Footer = () => {
       .then(() => {
         setLoading(false);
         setIsFormSubmitted(true);
+
+        const textForm = `Hai my name is ${contact.name}, and my Email is ${contact.email}. I send you this message cause I would like to ${contact.message}`;
+
+        window
+          .open(
+            `https://wa.me/${
+              import.meta.env.VITE_PHONE_NUMBER
+            }?text=${textForm}`,
+            "_blank"
+          )
+          .focus();
       })
       .catch((err) => console.log(err));
   };
@@ -47,14 +58,17 @@ const Footer = () => {
       <div className='app__footer-cards'>
         <div className='app__footer-card '>
           <img src={images.email} alt='email' />
-          <a href='mailto:hello@micael.com' className='p-text'>
-            hello@micael.com
+          <a href={`mailto:${import.meta.env.VITE_EMAIL}`} className='p-text'>
+            Email me
           </a>
         </div>
         <div className='app__footer-card'>
           <img src={images.mobile} alt='phone' />
-          <a href='tel:+1 (123) 456-7890' className='p-text'>
-            +1 (123) 456-7890
+          <a
+            href={`tel:+${import.meta.env.VITE_PHONE_NUMBER}`}
+            className='p-text'
+          >
+            Call me
           </a>
         </div>
       </div>

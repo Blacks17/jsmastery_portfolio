@@ -17,15 +17,15 @@ const Testimonial = () => {
 
   useEffect(() => {
     const query = '*[_type == "testimonials"]';
-    const brandsQuery = '*[_type == "brands"]';
+    // const brandsQuery = '*[_type == "brands"]';
 
     client.fetch(query).then((data) => {
       setTestimonials(data);
     });
 
-    client.fetch(brandsQuery).then((data) => {
-      setBrands(data);
-    });
+    // client.fetch(brandsQuery).then((data) => {
+    //   setBrands(data);
+    // });
   }, []);
 
   return (
@@ -93,6 +93,6 @@ const Testimonial = () => {
 
 export default AppWrap(
   MotionWrap(Testimonial, "app__testimonial"),
-  "testimonial",
+  "testimonials",
   "app__primarybg"
 );
