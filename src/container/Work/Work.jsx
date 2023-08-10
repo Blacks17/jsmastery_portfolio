@@ -10,10 +10,35 @@ import { useEffect } from "react";
 
 const Work = () => {
   const [activeFilter, setActiveFilter] = useState("All");
+
   const [animateCard, setAnimateCard] = useState({ y: 0, opacity: 1 });
 
   const [works, setWorks] = useState([]);
   const [filterWorks, setFilterWorks] = useState([]);
+
+  // PAGINATION
+  const [currentPage, setCurrentPage] = useState(1);
+  const [workPage, setWorkPage] = useState(8);
+
+  // function
+  const paginate = (pageNumber) => {
+    setAnimateCard([{ y: 100, opacity: 0 }]);
+    setTimeout(() => {
+      setAnimateCard([{ y: 0, opacity: 1 }]);
+      setCurrentPage(pageNumber);
+    }, 500);
+  };
+
+  // Get work item per page
+  const indexLast = currentPage * workPage;
+  const indexFirst = indexLast - workPage;
+  const currentWorks = filterWorks.slice(indexFirst, indexLast);
+
+  // Get total pagination
+  const pageNumbers = [];
+  for (let i = 1; i <= Math.ceil(filterWorks.length / workPage); i++) {
+    pageNumbers.push(i);
+  }
 
   useEffect(() => {
     const query = '*[_type == "works"]';
@@ -25,6 +50,7 @@ const Work = () => {
 
   const handleWorkFilter = (item) => {
     setActiveFilter(item);
+    setCurrentPage(1);
     setAnimateCard([{ y: 100, opacity: 0 }]);
 
     setTimeout(() => {
@@ -63,7 +89,7 @@ const Work = () => {
         transition={{ duration: 0.3, delayChildren: 0.3 }}
         className='app__work-portfolio'
       >
-        {filterWorks.map((work, i) => (
+        {currentWorks.map((work, i) => (
           <div className='app__work-item app__flex' key={i}>
             <div className='app__work-img app__flex'>
               <img src={urlFor(work.imgUrl)} alt={work.name} />
@@ -116,6 +142,24 @@ const Work = () => {
           </div>
         ))}
       </motion.div>
+
+      <ul className='app__work-pagination'>
+        {pageNumbers.map((number, i) => {
+          if (filterWorks.length > 8) {
+            return (
+              <li
+                className={`app__work-pagination-list app__flex p-text ${
+                  currentPage === number ? "item-active" : ""
+                }`}
+                key={i}
+                onClick={() => paginate(number)}
+              >
+                {number}
+              </li>
+            );
+          }
+        })}
+      </ul>
     </>
   );
 };
